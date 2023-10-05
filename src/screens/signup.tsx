@@ -1,12 +1,8 @@
-import { useState } from "react";
-import BAButton from "../component/BAButton";
-import BAInput from "../component/BAInput";
-
-import { fbSignUp } from "../config/firebasemethods";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { fbSignUp } from "../config/firebasemethods";
 
-
-export default function Signup() {
+export default function SignUp() {
   const [model, setModel] = useState<any>({});
 
   const fillModel = (key: string, val: any) => {
@@ -14,81 +10,64 @@ export default function Signup() {
     setModel({ ...model });
   };
 
- 
-
   const navigate = useNavigate();
-  model.role = 'user'
-  let signUpUser = () => {
+  const userSignUp = () => {
+    model.role = "user";
     fbSignUp(model)
-      .then((res) => {
-        console.log("sign up successfully")
-        if (model.role == 'admin') {
-          navigate("/admin")
+      .then((res:any) => {
+        if (model.role == "admin") {
+          navigate("/admin");
         } else {
-
-          navigate("/quiz");
+          navigate("/home");
         }
       })
-      .catch((err) => {
+      .catch((err:any) => {
         console.log(err);
       });
   };
 
   return (
     <>
-      <div className="bg-gradient-to-r from-slate-500 via-red-500 to-orange-300 h-screen flex justify-center items-center">
-        <div className="w-[600px] bg-[rgba(255,255,255,.2)] p-8 rounded-lg">
-          <div className="py-1">
-            <h1 className="text-3xl font-medium">Sign Up</h1>
-          </div>
-          <div className="py-2">
-            <BAInput
-              value={model.userName}
-              onChange={(e: any) => fillModel("userName", e.target.value)}
-              label="User Name"
-            />
-          </div>
-          <div className="py-2">
-            <BAInput
-              value={model.email}
-              onChange={(e: any) => fillModel("email", e.target.value)}
-              label="Email"
-            />
-          </div>
-          <div className="py2">
-            <BAInput
-              value={model.password}
-              onChange={(e: any) => fillModel("password", e.target.value)}
-              label="Password"
-            />
-          </div>
-          <div className="py-2">
-            <BAInput
-              value={model.rollNumber}
-              onChange={(e: any) => fillModel("rollNumber", e.target.value)}
-              label="Roll Number"
-            />
-          </div>
-          <div className="py-2">
-            <BAInput
-              value={model.fullName}
-              onChange={(e: any) => fillModel("fullName", e.target.value)}
-              label="Full Name"
-            />
-          </div>
+      <div className="h-screen d-flex justify-content-center align-items-center flex-column">
+        <h1>Sign Up</h1>
 
-          <div className="py-2">
-            <BAButton onClick={signUpUser} label="Sign Up" />
-          </div>
-
-
-          <div className="py-2">
-          <Link className="text-gray-50 hover:text-slate-700 no-underline text-lg" to="/login">Already Registered Please Login?</Link>
-           
-          </div>
-
-
-
+        <div className="py-1">
+          <input
+            value={model.userName}
+            onChange={(e) => fillModel("userName", e.target.value)}
+            className="form-control"
+            placeholder="User Name"
+            type="userName"
+          />
+        </div>
+        <div className="py-1">
+          <input
+            value={model.email}
+            onChange={(e) => fillModel("email", e.target.value)}
+            className="form-control"
+            placeholder="Email"
+            type="email"
+          />
+        </div>
+        <div className="py-1">
+          <input
+            value={model.password}
+            onChange={(e) => fillModel("password", e.target.value)}
+            className="form-control"
+            placeholder="Password"
+            type="password"
+          />
+        </div>
+        <div className="py-1">
+          <button
+            onClick={userSignUp}
+            className="btn w-100 btn-block btn-primary"
+          >
+            Sign Up
+          </button>
+        </div>
+        <div className="py-1">
+          <Link to="/login">Already Registered?</Link>
         </div>
       </div>
     </>

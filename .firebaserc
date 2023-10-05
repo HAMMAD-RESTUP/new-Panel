@@ -1,8 +1,0 @@
-{
-  "projects": {
-    "default": "taskmanagementa-app",
-    "staging": "taskmanagementa-app"
-  },
-  "targets": {},
-  "etags": {}
-}

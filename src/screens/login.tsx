@@ -1,9 +1,8 @@
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import BAButton from "../component/BAButton";
-import BAInput from "../component/BAInput";
-import { fbLogin,fbAuth } from "../config/firebasemethods";
+import { fbAuth, fbLogin } from "../config/firebasemethods"
+import Taxilogo from "../assets/Taxilogo.jpg"
 
-import { useNavigate, Link } from "react-router-dom";
 export default function Login() {
   const [model, setModel] = useState<any>({});
 
@@ -13,27 +12,27 @@ export default function Login() {
   };
   const navigate = useNavigate();
 
-// useEffect(()=>{
-//   fbAuth().then((res:any)=>{
-//     navigate("/quiz")
-//   })
-//   .catch((err:any)=>{
-//     console.log(err)
-//   })
+  // useEffect(() => {
+  //   fbAuth()
+  //     .then((res) => {
+  //       // window.history.back();
+  //       navigate("/student");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
-// },[])
-
-
-  let LoginUser = () => {
+  const loginUser = (e: any) => {
+    e.preventDefault();
     model.role = 'admin'
-    console.log(model);
     fbLogin(model)
-      .then((res:any) => {
-        console.log(res)
-        if (model.role == 'admin') {
-          navigate("/admin")
+      .then((res: any) => {
+        console.log(res);
+        if (res.role == "admin") {
+          navigate("/admin");
         } else {
-          navigate("/quiz");
+          navigate("/home");
         }
       })
       .catch((err) => {
@@ -43,33 +42,40 @@ export default function Login() {
 
   return (
     <>
-      <div className="bg-gradient-to-r from-slate-500 via-red-500 to-orange-300 h-screen flex justify-center items-center">
-        <div className="w-[500px] bg-[rgba(255,255,255,.2)] p-10 rounded-lg">
-          <div className="py-3">
-            <h1 className="text-3xl font-medium">Login</h1>
-          </div>
-
-          <div className="py-3">
-            <BAInput
+      <div className="h-screen d-flex justify-content-center align-items-center flex-column ">
+        <img className="h-[250px]" src={Taxilogo} alt="" />
+        <h1>Login</h1>
+        <form onSubmit={(e) => loginUser(e)}>
+          <div className="py-1">
+            <input
               value={model.email}
-              onChange={(e:any) => fillModel("email", e.target.value)}
-              label="Email"
+              onChange={(e) => fillModel("email", e.target.value)}
+              className="form-control"
+              placeholder="Email"
+              type="email"
             />
           </div>
-          <div className="py-4">
-            <BAInput
+          <div className="py-1">
+            <input
               value={model.password}
-              onChange={(e: any) => fillModel("password", e.target.value)}
-              label="Password"
+              onChange={(e) => fillModel("password", e.target.value)}
+              className="form-control"
+              placeholder="Password"
+              type="password"
             />
           </div>
-          <div className="py-4">
-            <BAButton onClick={LoginUser} label="Login" />
-
-              <Link className="bg-green-500 text-white font-bold text-center px-2 py-2  ml-10 rounded text-gray-50 hover:bg-green-700 no-underline text-lg ml-10 " to='/admin'>Create Account</Link>
-          
+          <div className="py-1">
+            <button
+              onClick={loginUser}
+              className="btn w-100 btn-block btn-primary"
+            >
+              Login
+            </button>
           </div>
-        </div>
+          <div className="py-1">
+            <Link to="/signup">Create Account?</Link>
+          </div>
+        </form>
       </div>
     </>
   );

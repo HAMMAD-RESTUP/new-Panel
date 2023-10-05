@@ -1,25 +1,22 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Admin from "../screens/admin";
+import Student from "../screens/Student";
 import Login from "../screens/login";
-import Signup from "../screens/signup";
-import Protected from "../screens/protected";
-import ScreteKey from "../screens/scretkey";
-import Quiz from "../screens/quiz";
 import Home from "../screens/home";
+import SignUp from "../screens/signup"
+import Protected from "../screens/protected";
 
 export default function AppRouter() {
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="/admin" element={<Admin/>} />
-          <Route path="/admin" element={<Protected Screen={Admin} />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="scretkey" element={<ScreteKey />} />
-          <Route path="quiz" element={<Quiz />} />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="admin" element={<Protected Screen={Admin} /> } />
+        <Route path="student" element={<Student />} />
+        <Route path="home" element={<Protected Screen={Home} />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<SignUp />} />
+      </Routes>
+    </Router>
   );
 }

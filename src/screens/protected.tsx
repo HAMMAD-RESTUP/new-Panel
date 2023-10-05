@@ -1,36 +1,40 @@
-import { useEffect, useState, } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fbAuth } from "../config/firebasemethods";
+import Loader from "../assets/loader.gif"
+import { Box } from "@mui/material";
 
 export default function Protected(props: any) {
+  const { Screen } = props;
+  const [loader, setLoader] = useState(true);
 
-    const { Screen } = props
+  const navigate = useNavigate();
 
-    const [loader, setloader] = useState(true)
-    const navigate = useNavigate()
+  let checkAuth = () => {
+    setLoader(true);
 
-    let checkAuth = () => {
-        setloader(true)
-        let auth = false
-        if (auth) {
-            setloader(false)
-        } else {
-            setloader(false);
-            navigate("/login")
-        }
+    fbAuth()
+      .then((res) => {
+        setLoader(false);
+      })
+      .catch((err) => {
+        setLoader(false);
+        navigate("/login");
+      });
+  };
 
-    }
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
-    useEffect(() => {
-        checkAuth();
-    }, [])
+  return loader ? (
+    <>
+    <Box sx={{width:"100%"}}>
 
-    return loader?(
-        <> 
-        <h1>Loading.......</h1>
-        </>
-        ):( 
-            <Screen/> 
-        )
-      
-
+      <img className="h-screen w-[100%]" src={Loader} alt="" />
+    </Box>
+    </>
+  ) : (
+    <Screen />
+  );
 }
